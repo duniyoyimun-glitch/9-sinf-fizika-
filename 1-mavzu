@@ -1,1 +1,367 @@
-Termodinamikaning molekulyar-kinetik nazariyasi asoslari 
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9-sinf Fizika: MKT va Termodinamika Asoslari</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --accent: #ef4444;
+            --success: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { margin: 0; font-size: 2.2rem; }
+        h2 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        .canvas-container {
+            position: relative;
+            background: #0f172a;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 3px solid #334155;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 350px;
+            background: #0f172a;
+        }
+        .controls {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        button:hover { background-color: #1d4ed8; }
+        .formula {
+            background: #eff6ff;
+            border-left: 5px solid var(--primary);
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 15px 0;
+        }
+        .stats {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #334155;
+        }
+        input[type="range"] {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>9-Sinf Fizika: 1-Mavzu</h1>
+        <p style="margin-top: 10px; font-size: 1.2rem;">Termodinamikaning molekulyar-kinetik nazariyasi asoslari (Interaktiv Simulyatsiyalar)</p>
+    </header>
+
+    <!-- 1-REJA -->
+    <div class="section">
+        <h2>1-Reja: Termodinamika asoslari (Porshen ostidagi gaz tizimi)</h2>
+        <div class="grid">
+            <div class="info-panel">
+                <p><strong>Termodinamika</strong> — issiqlik hodisalarini moddalarning ichki tuzilishiga e'tibor bermasdan, makroskopik parametrlar (bosim, hajm, harorat) va energiya aylanishlari asosida o‘rganadi.</p>
+                <p>Bu simulyatsiyada siz porshenni pastga siljitib gaz hajmini kamaytirishingiz (ish bajarishingiz) yoki gazga issiqlik berishingiz mumkin. Bu jarayonda gazning ichki energiyasi va bosimi o'zgaradi.</p>
+                <div class="formula">Termodinamikaning 1-qonuni: Q = ΔU + A'</div>
+                <div class="controls">
+                    <button onclick="heatGas(5)">🔥 Issiqlik berish (Q+)</button>
+                    <button onclick="coolGas(5)">❄️ Sovitish (Q-)</button>
+                    <div>
+                        <label>Porshen joylashuvi (Hajm): </label>
+                        <input type="range" id="pistonRange" min="100" max="280" value="200" oninput="changeVolume(this.value)">
+                    </div>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="canvas1"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2-REJA -->
+    <div class="section">
+        <h2>2-Reja: Ideal gaz va uning asosiy tenglamasi</h2>
+        <div class="grid">
+            <div class="info-panel">
+                <p><strong>Ideal gaz</strong> — molekulalari cheksiz kichik hajmga ega bo‘lgan va ular orasida o‘zaro ta'sir kuchlari mafjud bo‘lmagan xayoliy modeldir. Molekulalarning idish devoriga urilishi natijasida <strong>gaz bosimi (P)</strong> hosil bo'ladi.</p>
+                <p>Simulyatsiyada molekulalar sonini yoki ularning tezligini (haroratini) o'zgartirib, devorga bo'lgan bosimning real vaqtda o'zgarishini kuzating.</p>
+                <div class="formula">MKT asosiy tenglamasi: P = (1/3) * n * m₀ * v² = n * k * T</div>
+                <div class="controls">
+                    <div>
+                        <label>Molekulalar soni (N): </label>
+                        <input type="range" id="molCountRange" min="10" max="150" value="50" onchange="updateMoleculeCount(this.value)">
+                    </div>
+                    <div class="stats">
+                        <span id="pressureDisplay">Bosim (P): 1.00 atm</span>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="canvas2"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3-REJA -->
+    <div class="section">
+        <h2>3-Reja: Harorat va molekulyar-kinetik nazariya</h2>
+        <div class="grid">
+            <div class="info-panel">
+                <p>Molekulyar-kinetik nazariyaga ko‘ra, <strong>harorat (T)</strong> — modda zarrachalarining tartibsiz issiqlik harakati o‘rtacha kinetik energiyasining o‘lchovidir. Harorat qanchalik yuqori bo'lsa, zarrachalar shunchalik tez harakat qiladi.</p>
+                <p>Slayder orqali haroratni mutloq nolga (0 K) yaqinlashtiring yoki oshiring. Zarrachalar harakati qanday sekinlashishi va tezlashishini tomosha qiling.</p>
+                <div class="formula">O‘rtacha kinetik energiya: E_kin = (3/2) * k * T</div>
+                <div class="controls">
+                    <div>
+                        <label>Harorat (T, Kelvin): </label>
+                        <input type="range" id="tempRange" min="10" max="600" value="300" oninput="changeTemperature(this.value)">
+                        <span id="tempDisplay" style="font-weight: bold; margin-left: 10px;">300 K</span>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="canvas3"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Molecule {
+            constructor(maxX, maxY) {
+                this.maxX = maxX;
+                this.maxY = maxY;
+                this.reset(150); 
+            }
+            reset(yBound) {
+                this.x = Math.random() * (this.maxX - 20) + 10;
+                this.y = Math.random() * (yBound - 20) + 10;
+                let angle = Math.random() * Math.PI * 2;
+                this.speed = 2;
+                this.vx = Math.cos(angle) * this.speed;
+                this.vy = Math.sin(angle) * this.speed;
+                this.radius = 4;
+            }
+            update(yBound, speedMultiplier = 1) {
+                this.x += this.vx * speedMultiplier;
+                this.y += this.vy * speedMultiplier;
+
+                if (this.x - this.radius < 0) { this.x = this.radius; this.vx *= -1; return true; }
+                if (this.x + this.radius > this.maxX) { this.x = this.maxX - this.radius; this.vx *= -1; return true; }
+                if (this.y - this.radius < 0) { this.y = this.radius; this.vy *= -1; return true; }
+                if (this.y + this.radius > yBound) { this.y = yBound - this.radius; this.vy *= -1; return true; }
+                return false;
+            }
+            draw(ctx, color = "#60a5fa") {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        const canvas1 = document.getElementById('canvas1');
+        const ctx1 = canvas1.getContext('2d');
+        let pistonY = 200; 
+        let gasTemp1 = 300; 
+        let molecules1 = [];
+
+        function initSection1() {
+            canvas1.width = canvas1.parentElement ? canvas1.parentElement.clientWidth : 400;
+            canvas1.height = 350;
+            molecules1 = [];
+            for(let i=0; i<40; i++) {
+                let m = new Molecule(canvas1.width, canvas1.height);
+                m.y = Math.random() * (canvas1.height - pistonY - 20) + pistonY + 10;
+                molecules1.push(m);
+            }
+        }
+
+        function heatGas(val) { gasTemp1 += val * 15; if(gasTemp1 > 800) gasTemp1 = 800; }
+        function coolGas(val) { gasTemp1 -= val * 15; if(gasTemp1 < 100) gasTemp1 = 100; }
+        function changeVolume(val) { pistonY = parseInt(val); }
+
+        function animateSection1() {
+            ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+            let redIntensity = Math.floor((gasTemp1 - 100) / 700 * 100);
+            ctx1.fillStyle = `rgba(255, ${200 - redIntensity}, 0, ${redIntensity/500})`;
+            ctx1.fillRect(0, pistonY, canvas1.width, canvas1.height - pistonY);
+
+            molecules1.forEach(m => {
+                m.x += m.vx * (Math.sqrt(gasTemp1 / 300) * (350 - pistonY) / 150);
+                m.y += m.vy * (Math.sqrt(gasTemp1 / 300) * (350 - pistonY) / 150);
+
+                if (m.x < 5 || m.x > canvas1.width - 5) m.vx *= -1;
+                if (m.y < pistonY + 5 || m.y > canvas1.height - 5) m.vy *= -1;
+                if(m.y < pistonY) m.y = pistonY + 5;
+
+                m.draw(ctx1, `hsl(${220 - (gasTemp1-300)/3}, 90%, 60%)`);
+            });
+
+            ctx1.fillStyle = "#94a3b8";
+            ctx1.fillRect(0, pistonY - 15, canvas1.width, 15);
+            ctx1.fillStyle = "#64748b";
+            ctx1.fillRect(canvas1.width/2 - 10, 0, 20, pistonY - 15);
+
+            ctx1.fillStyle = "white";
+            ctx1.font = "16px sans-serif";
+            ctx1.fillText(`Harorat: ${Math.round(gasTemp1)} K`, 15, pistonY + 30);
+            let V = Math.round((canvas1.height - pistonY));
+            ctx1.fillText(`Hajm (V): ${V} sh.b.`, 15, pistonY + 55);
+            let P = Math.round((gasTemp1 / V) * 100);
+            ctx1.fillText(`Bosim (P): ${P} kPa`, 15, pistonY + 80);
+
+            requestAnimationFrame(animateSection1);
+        }
+
+        const canvas2 = document.getElementById('canvas2');
+        const ctx2 = canvas2.getContext('2d');
+        let molecules2 = [];
+        let wallCollisions = 0;
+
+        function initSection2() {
+            canvas2.width = canvas2.parentElement ? canvas2.parentElement.clientWidth : 400;
+            canvas2.height = 350;
+            updateMoleculeCount(50);
+        }
+
+        function updateMoleculeCount(val) {
+            let count = parseInt(val);
+            molecules2 = [];
+            for(let i=0; i<count; i++) {
+                let m = new Molecule(canvas2.width, canvas2.height);
+                m.reset(canvas2.height);
+                molecules2.push(m);
+            }
+        }
+
+        setInterval(() => {
+            let pCalc = (wallCollisions * 0.15 * (molecules2.length / 50)).toFixed(2);
+            let el = document.getElementById('pressureDisplay');
+            if(el) el.innerText = `O'rtacha Bosim (P): ${pCalc} atm`;
+            wallCollisions = 0;
+        }, 500);
+
+        function animateSection2() {
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+            molecules2.forEach(m => {
+                let collided = m.update(canvas2.height, 1.5);
+                if(collided) wallCollisions++;
+                m.draw(ctx2, "#10b981");
+            });
+            requestAnimationFrame(animateSection2);
+        }
+
+        const canvas3 = document.getElementById('canvas3');
+        const ctx3 = canvas3.getContext('2d');
+        let molecules3 = [];
+        let currentTemp = 300;
+
+        function initSection3() {
+            canvas3.width = canvas3.parentElement ? canvas3.parentElement.clientWidth : 400;
+            canvas3.height = 350;
+            molecules3 = [];
+            for(let i=0; i<60; i++) {
+                let m = new Molecule(canvas3.width, canvas3.height);
+                m.reset(canvas3.height);
+                molecules3.push(m);
+            }
+        }
+
+        function changeTemperature(val) {
+            currentTemp = parseInt(val);
+            let el = document.getElementById('tempDisplay');
+            if(el) el.innerText = currentTemp + " K";
+        }
+
+        function animateSection3() {
+            ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+            let speedMultiplier = Math.sqrt(currentTemp / 300) * 2;
+
+            molecules3.forEach(m => {
+                m.update(canvas3.height, speedMultiplier);
+                let r = Math.floor((currentTemp / 600) * 255);
+                let b = Math.floor((1 - (currentTemp / 600)) * 255);
+                m.draw(ctx3, `rgb(${r}, 100, ${b})`);
+            });
+
+            if(currentTemp > 400) {
+                ctx3.fillStyle = "rgba(255,255,255,0.3)";
+                ctx3.font = "14px Arial";
+                ctx3.fillText("Yuqori kinetik energiya 🔥", 20, 30);
+            } else if(currentTemp < 50) {
+                ctx3.fillStyle = "rgba(255,255,255,0.4)";
+                ctx3.font = "14px Arial";
+                ctx3.fillText("Mutloq nolga yaqin ❄️", 20, 30);
+            }
+
+            requestAnimationFrame(animateSection3);
+        }
+
+        window.onload = function() {
+            initSection1();
+            initSection2();
+            initSection3();
+            animateSection1();
+            animateSection2();
+            animateSection3();
+        };
+
+        window.onresize = function() {
+            if(canvas1.parentElement) canvas1.width = canvas1.parentElement.clientWidth;
+            if(canvas2.parentElement) canvas2.width = canvas2.parentElement.clientWidth;
+            if(canvas3.parentElement) canvas3.width = canvas3.parentElement.clientWidth;
+        };
+    </script>
+</body>
+</html>
